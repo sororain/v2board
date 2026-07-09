@@ -143,18 +143,6 @@ class ClashNyanpasu
                 $plugin_opts['path'] = $server['obfs-path'];
             }
             $array['plugin-opts'] = $plugin_opts;
-        } else if ((($server['network'] ?? null) === 'http') && isset(($server['network_settings'] ?? [])['Host'])) {
-            // Fallback like Singbox: treat http obfs specified via network_settings
-            $array['plugin'] = 'obfs';
-            $networkSettings = $server['network_settings'];
-            $plugin_opts = [
-                'mode' => 'http',
-                'host' => ($networkSettings['Host'] ?? ''),
-            ];
-            if (isset($networkSettings['path'])) {
-                $plugin_opts['path'] = $networkSettings['path'];
-            }
-            $array['plugin-opts'] = $plugin_opts;
         }
         return $array;
     }
