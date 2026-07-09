@@ -143,16 +143,13 @@ class ClashMeta
                 $plugin_opts['path'] = $server['obfs-path'];
             }
             $array['plugin-opts'] = $plugin_opts;
-        } else if ((($server['network'] ?? null) === 'http') && isset(($server['network_settings'] ?? [])['Host'])) {
-            // Fallback like Singbox: treat http obfs specified via network_settings
+        } elseif (($server['network'] ?? null) == 'http') {
             $array['plugin'] = 'obfs';
-            $networkSettings = $server['network_settings'];
             $plugin_opts = [
-                'mode' => 'http',
-                'host' => ($networkSettings['Host'] ?? ''),
+                'mode' => 'http'
             ];
-            if (isset($networkSettings['path'])) {
-                $plugin_opts['path'] = $networkSettings['path'];
+            if (isset($server['network_settings']['Host'])) {
+                $plugin_opts['host'] = $server['network_settings']['Host'];
             }
             $array['plugin-opts'] = $plugin_opts;
         }
