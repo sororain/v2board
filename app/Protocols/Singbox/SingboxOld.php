@@ -121,15 +121,6 @@ class SingboxOld
                 $plugin_opts_parts[] = "path=" . $server['obfs-path'];
             }
             $array['plugin_opts'] = implode(';', $plugin_opts_parts);
-        } else if ((($server['network'] ?? null) == 'http') && isset($server['network_settings']['Host'])) {
-            $array['plugin'] = 'obfs-local';
-            $plugin_opts_parts = [];
-            $plugin_opts_parts[] = "obfs=http";
-            $networkSettings = $server['network_settings'];
-            $plugin_opts_parts[] = "obfs-host=" . $networkSettings['Host'];
-            $plugin_opts_parts[] = "path=" . ($networkSettings['path'] ?? '/');
-
-            $array['plugin_opts'] = implode(';', $plugin_opts_parts);
         }
         return $array;
     }
