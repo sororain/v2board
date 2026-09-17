@@ -61,7 +61,8 @@ class AuthController extends Controller
         }
         // 反随机邮箱注册：
         // ① 本地部分含大写字母 → 拒绝（统一要求全小写）；
-        // ② 本地部分的"数字组"（连续数字段）≥ 2 → 拒绝（数字被字母分隔散布为随机串特征）。
+        // ② 数字组（连续数字段）≥ 2 且其中存在单个数字的组 → 拒绝（单个数字被字母
+        //    分隔散布为随机串特征；全部为多位数字组的放行，如 test22test33）。
         if ((int)config('v2board.random_alias_block_enable', 0)) {
             $emailInput = $request->input('email');
             if (is_string($emailInput) && strpos($emailInput, '@') !== false) {
@@ -69,7 +70,9 @@ class AuthController extends Controller
                 if (preg_match('/[A-Z]/', $local)) {
                     abort(500, __('注册失败：请使用全小写字母的邮箱注册'));
                 }
-                if (preg_match_all('/\d+/', $local) >= 2) {
+                preg_match_all('/\d+/', $local, $digitMatches);
+                $digitGroups = $digitMatches[0] ?? [];
+                if (count($digitGroups) >= 2 && in_array(1, array_map('strlen', $digitGroups), true)) {
                     abort(500, __('注册失败：该邮箱格式受限，请更换邮箱后重试'));
                 }
             }
