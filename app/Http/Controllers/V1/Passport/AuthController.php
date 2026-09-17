@@ -62,7 +62,7 @@ class AuthController extends Controller
         // 反随机邮箱注册：
         // ① 本地部分含大写字母 → 拒绝（统一要求全小写）；
         // ② 数字组（连续数字段）≥ 2 且其中存在单个数字的组 → 拒绝（单个数字被字母
-        //    分隔散布为随机串特征；全部为多位数字组的放行，如 test22test33）。
+        //    分隔散布为随机串特征；全部为多位数字组的放行）。
         if ((int)config('v2board.random_alias_block_enable', 0)) {
             $emailInput = $request->input('email');
             if (is_string($emailInput) && strpos($emailInput, '@') !== false) {
